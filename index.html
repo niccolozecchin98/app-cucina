@@ -613,5 +613,8 @@ async function chSend(t){const i=document.getElementById("ci");t=(t||(i?i.value:
  try{const r=await SMP(msgs,{cache:false,onText:({text})=>{CH[CH.length-1].content=text;chMsgs()}});CH[CH.length-1].content=r.text}
  catch(e){CH[CH.length-1].content=e&&e.code=="not_granted"?"Consenso negato: riprova e accetta la richiesta.":"Non riesco a rispondere ora ("+((e&&e.code)||"errore")+"). Riprova tra poco."}
  BUSY=0;chMsgs()}
-load();draw();sv();cloudInit();
+load();draw();sv();cloudInit();/* --- FUNZIONI DI VISUALIZZAZIONE MANCANTI --- */
+const lines=(a,o)=>o.l.map((l,j)=>{const t=itm(l);return `<div class="ln"><input list="itm" class="${l.n&&!t?"er":""}" placeholder="Ingrediente o ricetta…" value="${E(t?t.n:l.n)}" onchange="ul('${a}',${o.id},${j},'n',this.value)"><input inputmode="decimal" value="${l.q}" onchange="ul('${a}',${o.id},${j},'q',this.value)" aria-label="Quantità"><span>${t&&t.k=="i"?t.o.b:"g"} · ${eur(lc(l))}</span><button class="x" aria-label="Rimuovi" onclick="dl('${a}',${o.id},${j})">×</button></div>`}).join("");
+const dlist=()=>`<datalist id="itm">${S.ing.map(i=>`<option value="${E(i.n)}">`).join("")}${S.rec.map(r=>`<option value="${E(r.n)}" label="ricetta">`).join("")}</datalist>`;
+const fld=(l,v,fn,w)=>`<label>${l}<input inputmode="decimal" value="${E(v)}" style="${w?"width:"+w:""}" onchange="${fn}(this.value)"></label>`;
 </script></body></html>
