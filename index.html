@@ -1,1 +1,32 @@
-https://gist.github.com/niccolozecchin98/81b2a9074d8a41a7abe3af79c2be1741/raw/29e2d0b439e154afbfb2db86e069c8503f36d532/index.html
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Costo piatto e preventivi menù</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f8fafc; color: #0f172a; text-align: center; }
+        .box { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); max-width: 300px; }
+        .loader { border: 4px solid #ccfbf1; border-top: 4px solid #0d9488; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        a { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #0d9488; color: white; text-decoration: none; border-radius: 99px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="loader"></div>
+        <h2>Caricamento dell'app in corso...</h2>
+        <p style="font-size: 14px; color: #64748b;">Un attimo di pazienza.</p>
+        <a href="#" id="btn" style="display: none;">Apri l'App</a>
+    </div>
+    <script>
+        // Questo è il tuo link. Il browser lo aprirà automaticamente.
+        const URL_APP = "https://gist.github.com/niccolozecchin98/81b2a9074d8a41a7abe3af79c2be1741/raw/29e2d0b439e154afbfb2db86e069c8503f36d532/index.html";
+
+        // Aspetta mezzo secondo e poi reindirizza alla pagina dell'app
+        setTimeout(function() {
+            window.location.href = URL_APP;
+        }, 500);
+    </script>
+</body>
+</html>
