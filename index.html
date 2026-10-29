@@ -1,1 +1,31 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Cucina</title>
+<style>
+body { font-family: sans-serif; padding: 20px; background: #f8fafc; color: #0f172a; }
+h1 { font-size: 24px; }
+.card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.price { color: #0d9488; font-weight: bold; float: right; }
+</style>
+</head>
+<body>
+<h1>Costo piatto e preventivi</h1>
+<div id="list"></div>
+<script>
+const data = [
+  ["Ricotta affumicata Friulana", 9.05],
+  ["Acciughe filetti Cantabrico 740 g", 43.5],
+  ["Sacchi sottovuoto 15x25 (100 pz)", 12.84],
+  ["Polpa di pomodoro", 3.50]
+];
+let html = "";
+for (let i = 0; i < data.length; i++) {
+  html += '<div class="card">' + data[i][0] + '<span class="price">EUR ' + data[i][1] + '</span></div>';
+}
+document.getElementById("list").innerHTML = html;
+</script>
+</body>
+</html>
