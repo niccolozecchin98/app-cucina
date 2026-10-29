@@ -45,15 +45,25 @@ const eur=n=>"EUR "+f(n);
 function seed(){S={ing:SEED.map((r,i)=>({id:i+1,n:r[0],p:r[1],um:r[2],b:r[3],c:r[4],sc:r[5],r:100,doc:"OCC/"+r[6],cat:"Altro",a:[]}))}}
 function load(){try{S=JSON.parse(localStorage.getItem("cc3"))}catch(e){}if(!S)seed()}
 function draw(){
-  document.getElementById("nav").innerHTML=[["ing","Ingredienti"],["rec","Ricette"],["dish","Piatti"],["menu","Menù"],["ord","Ordini"],["lab","Etichette"],["dat","Dati"]].map(t=>`<button class="${t[0]==tab?'on':''}" onclick="tab='${t[0]}';draw()">${t[1]}</button>`).join("");
+ document.getElementById("nav").innerHTML=[["ing","Ingredienti"],["rec","Ricette"],["dish","Piatti"],["menu","Menù"],["ord","Ordini"],["lab","Etichette"],["dat","Dati"]].map(t=>`<button class="${t[0]==tab?'on':''}" onclick="tab='${t[0]}';draw()">${t[1]}</button>`).join("");
+ 
  if(tab=="ing"){
   const rows=S.ing.map(i=>`<div class="mob-card"><div class="top"><div>${E(i.n)}</div><div class="price-tag">${eur(i.p)}</div></div><div class="meta">Cod: ${E(i.doc)} - ${E(i.cat)}</div></div>`).join("");
   document.getElementById("app").innerHTML=`<div class="card"><b>Importa Bolla PDF</b><br><br><label class="b" style="display:inline-block">Scegli file<input type="file" style="display:none" onchange="alert('In arrivo!')"></label></div><div class="mob-list">${rows}</div>`;
+ } else if (tab=="rec") {
+  document.getElementById("app").innerHTML=vRec();
+ } else if (tab=="dish") {
+  document.getElementById("app").innerHTML=vDish();
+ } else if (tab=="menu") {
+  document.getElementById("app").innerHTML=vMenu();
+ } else if (tab=="ord") {
+  document.getElementById("app").innerHTML=vOrd();
+ } else if (tab=="lab") {
+  document.getElementById("app").innerHTML=vLab();
  } else {
   document.getElementById("app").innerHTML=`<div class="card"><b>Backup</b><textarea rows="5" readonly>${E(JSON.stringify(S))}</textarea></div>`;
  }
 }
-
 function vRec(){
  return '<p class="hint">Ricette di base (salse, fondi).</p><button class="b" onclick="addRec()" style="margin-bottom:12px">Nuova ricetta</button>' + S.rec.map(r => '<div class="card"><b>' + E(r.n) + '</b></div>').join("");
 }
