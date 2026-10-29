@@ -79,18 +79,46 @@ const vMenu=()=>vMenu0();
 function addRec(){S.rec.push({id:Date.now(),n:"Nuova ricetta",y:0,l:[]});save();draw();}
 function addDish(){S.dishes.push({id:Date.now(),n:"Nuovo piatto",cat:"Altro",t:30,x:5,pv:0,l:[]});save();draw();}
 const del=(a,id)=>{if(confirm("Eliminare?")){S[a]=S[a].filter(x=>x.id!=id);save();draw();}};
-const ul=(a,id,j,k,v)=>{const l=D(S[a],id).l[j];if(k=="n"){l.n=v;l.k="i";l.i=0;}else l.q=parseFloat(v)||0;save();draw();}
-const al=(a,id)=>{D(S[a],id).l.push({k:"i",i:0,n:"",q:0});save();draw();};
-const dl=(a,id,j)=>{D(S[a],id).l.splice(j,1);save();draw();};
-function lines(a,o){return o.l.map((l,j)=>`<div class="row" style="gap:4px;margin-bottom:4px"><input placeholder="Ingrediente..." value="${E(l.n)}" onchange="ul('${a}',${o.id},${j},'n',this.value)" style="flex:2"><input inputmode="decimal" placeholder="g" value="${l.q||''}" onchange="ul('${a}',${o.id},${j},'q',this.value)" style="flex:1"><button class="x" onclick="dl('${a}',${o.id},${j})">x</button></div>`).join("");}
+const ul=(a,id,j,k,v)=>{const l=S[a].find(x=>x.id==id).l[j];if(k=="n"){l.n=v;l.k="i";l.i=0;}else l.q=parseFloat(v)||0;save();draw();}
+const al=(a,id)=>{S[a].find(x=>x.id==id).l.push({k:"i",i:0,n:"",q:0});save();draw();};
+const dl=(a,id,j)=>{S[a].find(x=>x.id==id).l.splice(j,1);save();draw();};
+
+function lines(a,o){
+ var h = "";
+ for(var j=0; j<o.l.length; j++){
+  var l = o.l[j];
+  h += '<div class="row" style="gap:4px;margin-bottom:4px">';
+  h += '<input placeholder="Ingrediente..." value="' + (l.n||'') + '" onchange="ul(\'' + a + '\',' + o.id + ',' + j + ',\'n\',this.value)" style="flex:2">';
+  h += '<input inputmode="decimal" placeholder="g" value="' + (l.q||'') + '" onchange="ul(\'' + a + '\',' + o.id + ',' + j + ',\'q\',this.value)" style="flex:1">';
+  h += '<button class="x" onclick="dl(\'' + a + '\',' + o.id + ',' + j + ')">x</button>';
+  h += '</div>';
+ }
+ return h;
+}
 
 function vRec(){
- return `<p class="hint">Ricette di base (salse, fondi).</p><button class="b" onclick="addRec()" style="margin-bottom:12px">Nuova ricetta</button>` + S.rec.map(r => `<div class="card"><div class="row"><input value="${E(r.n)}" onchange="D(S.rec,${r.id}).n=this.value;save();" style="font-weight:bold;font-size:16px"><button class="x" onclick="del('rec',${r.id})">x</button></div>${lines("rec",r)}<button class="b g" onclick="al('rec',${r.id})" style="margin-top:8px">+ Ingrediente</button></div>`).join("");
+ var h = '<p class="hint">Ricette di base (salse, fondi).</p><button class="b" onclick="addRec()" style="margin-bottom:12px">Nuova ricetta</button>';
+ for(var i=0; i<S.rec.length; i++){
+  var r = S.rec[i];
+  h += '<div class="card"><div class="row"><input value="' + (r.n||'') + '" onchange="S.rec.find(x=>x.id==' + r.id + ').n=this.value;save();" style="font-weight:bold;font-size:16px"><button class="x" onclick="del(\'rec\',' + r.id + ')">x</button></div>';
+  h += lines("rec", r);
+  h += '<button class="b g" onclick="al(\'rec\',' + r.id + ')" style="margin-top:8px">+ Ingrediente</button></div>';
+ }
+ return h;
 }
+
 function vDish(){
- return `<p class="hint">Piatti e costo a porzione.</p><button class="b" onclick="addDish()" style="margin-bottom:12px">Nuovo piatto</button>` + S.dishes.map(d => `<div class="card"><div class="row"><input value="${E(d.n)}" onchange="D(S.dishes,${d.id}).n=this.value;save();" style="font-weight:bold;font-size:16px"><button class="x" onclick="del('dishes',${d.id})">x</button></div>${lines("dishes",d)}<button class="b g" onclick="al('dishes',${d.id})" style="margin-top:8px">+ Ingrediente</button></div>`).join("");
+ var h = '<p class="hint">Piatti e costo a porzione.</p><button class="b" onclick="addDish()" style="margin-bottom:12px">Nuovo piatto</button>';
+ for(var i=0; i<S.dishes.length; i++){
+  var d = S.dishes[i];
+  h += '<div class="card"><div class="row"><input value="' + (d.n||'') + '" onchange="S.dishes.find(x=>x.id==' + d.id + ').n=this.value;save();" style="font-weight:bold;font-size:16px"><button class="x" onclick="del(\'dishes\',' + d.id + ')">x</button></div>';
+  h += lines("dishes", d);
+  h += '<button class="b g" onclick="al(\'dishes\',' + d.id + ')" style="margin-top:8px">+ Ingrediente</button></div>';
+ }
+ return h;
 }
 load();draw();
+</script></body></html>
 </script>
 </body>
 </html>
