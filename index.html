@@ -135,7 +135,7 @@ function norm(){
  if(!S.pz)seedPz();
 }
 function load(){try{S=JSON.parse(localStorage.getItem("cc2")||localStorage.getItem("cc1"))}catch(e){}if(!S||!S.ing)seed();else norm()}
-function save(){try{localStorage.setItem("cc2",JSON.stringify(S))}catch(e){}META.dirty=true;mt();sv();clearTimeout(AT);if(REF)AT=setTimeout(()=>cloudSave(true),2000)}
+function save(){try{localStorage.setItem("cc2",JSON.stringify(S))}catch(e){}META.dirty=true;mt();sv();}
 function go(){save();draw()}
 const cpb=i=>i&&i.c>0?i.p*(1-i.sc/100)/i.c/((i.r||100)/100):0;
 function itm(l){if(!l.i)return null;if(l.k=="r"){const r=D(S.rec,l.i);return r?{k:"r",n:r.n,o:r}:null}const i=ing(l.i);return i?{k:"i",n:i.n,o:i}:null}
@@ -167,7 +167,6 @@ function reset(){if(confirm("Ripristinare i dati iniziali? Le tue modifiche andr
 const srtf=(a,b)=>{const k=SORT.k;if(!k)return 0;const r=k=="cod"?((parseInt(a.cod,10)||0)-(parseInt(b.cod,10)||0))||(a.cod||"").localeCompare(b.cod||""):a.n.localeCompare(b.n,"it");return r*SORT.d};
 function srt(k){SORT=SORT.k==k?{k,d:-SORT.d}:{k,d:1};draw()}
 const arw=k=>SORT.k==k?(SORT.d>0?"▲":"▼"):"↕";
-function filt(v){Q=v.toLowerCase();draw()}
 function cp(t){try{navigator.clipboard.writeText(t).then(()=>alert("Copiato"),()=>prompt("Copia il testo:",t))}catch(e){prompt("Copia il testo:",t)}}
 function restore(){try{const o=JSON.parse(document.getElementById("im").value);if(!o.ing||!o.dishes)throw 0;if(!confirm("Sostituire tutti i dati attuali con il backup?"))return;S=o;norm();go();alert("Dati ripristinati")}catch(e){alert("Backup non valido: incolla il testo copiato con “Copia backup”.")}}
 function guess(r){const P=r.n.match(/PZ[\s-]*(\d+)/i),M=r.n.match(/\b(KG|GR|LT|ML)[\s-]*(\d+(?:[.,]\d+)?)/i);
@@ -217,6 +216,9 @@ function vLog(){const L=S.log;if(!L)return"";
  ${L.nw?`<div class="lg">${L.nw} nuovi ingredienti aggiunti (da verificare, segnati con !)</div>`:""}
  ${L.r.map(r=>`<div class="lg">${E(r.n)}: ${eur(r.o)} → ${eur(r.nw)} <b class="${r.pct>0?"bad":"ok"}">${r.pct>0?"+":""}${f(r.pct,1)}%</b></div>`).join("")||'<div class="lg">Nessuna variazione di prezzo.</div>'}
  ${L.d.length?`<div class="lg"><b>Piatti ricalcolati</b></div>`+L.d.map(d=>`<div class="lg">${E(d.n)}: ${eur(d.o)} → ${eur(d.nw)} <b class="${d.nw>d.o?"bad":"ok"}">${d.nw>d.o?"+":""}${eur(d.nw-d.o)}</b></div>`).join(""):""}</div>`}
+const lines=(a,o)=>o.l.map((l,j)=>{const t=itm(l);return `<div class="ln"><input list="itm" class="${l.n&&!t?"er":""}" placeholder="Ingrediente o ricetta…" value="${E(t?t.n:l.n)}" onchange="ul('${a}',${o.id},${j},'n',this.value)"><input inputmode="decimal" value="${l.q}" onchange="ul('${a}',${o.id},${j},'q',this.value)" aria-label="Quantità"><span>${t&&t.k=="i"?t.o.b:"g"} · ${eur(lc(l))}</span><button class="x" aria-label="Rimuovi" onclick="dl('${a}',${o.id},${j})">×</button></div>`}).join("");
+const dlist=()=>`<datalist id="itm">${S.ing.map(i=>`<option value="${E(i.n)}">`).join("")}${S.rec.map(r=>`<option value="${E(r.n)}" label="ricetta">`).join("")}</datalist>`;
+const fld=(l,v,fn,w)=>`<label>${l}<input inputmode="decimal" value="${E(v)}" style="${w?"width:"+w:""}" onchange="${fn}(this.value)"></label>`;
 const catSel=(arr,v,fn)=>`<select onchange="${fn}(this.value)">${arr.map(c=>`<option${c==v?" selected":""}>${E(c)}</option>`).join("")}</select>`;
 const filtSel=(arr,v,js)=>`<select onchange="${js}=this.value;draw()" aria-label="Filtra per categoria"><option value="">Tutte le categorie</option>${arr.map(c=>`<option${c==v?" selected":""}>${E(c)}</option>`).join("")}</select>`;
 const stepSel=()=>`<label class="row" style="font-size:13px;color:var(--mu)">Arrotonda i prezzi per eccesso a&nbsp;<select onchange="S.step=+this.value;go()">${[0.1,0.5,1].map(v=>`<option value="${v}"${v==S.step?" selected":""}>${eur(v)}</option>`).join("")}</select></label>`;
